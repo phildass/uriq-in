@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --site-banner-h: 2rem;
+  --site-nav-h: 3.25rem;
+  --site-chrome-top: calc(var(--site-banner-h) + var(--site-nav-h));
+}
+
+body {
+  @apply bg-base-bg font-sans text-base-text antialiased;
+}
+
+.container-mobile {
+  @apply mx-auto w-full max-w-md px-4;
+}
+
+/* Thumb-friendly tap targets */
+.tap-target {
+  @apply min-h-[44px] min-w-[44px];
+}

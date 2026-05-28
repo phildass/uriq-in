@@ -1,0 +1,22 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# next.js
+/.next/
+/out/
+
+# env (secrets)
+.env
+.env.local
+.env.*.local
+uriq.env
+
+# debug
+npm-debug.log*
+.DS_Store
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
