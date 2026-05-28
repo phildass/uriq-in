@@ -1,10 +1,9 @@
-import type { NextConfig } from "next";
-import { existsSync, readFileSync } from "fs";
-import { resolve } from "path";
+const { existsSync, readFileSync } = require("fs");
+const { resolve } = require("path");
 
 /**
- * Load Supabase credentials from uriq.env (project-specific file).
- * Supports `KEY=value` and `KEY: value` lines.
+ * Load env variables from uriq.env for local/prod parity.
+ * Add these keys in Hostinger Environment Variables dashboard too.
  */
 function loadUriqEnv() {
   const envPath = resolve(process.cwd(), "uriq.env");
@@ -36,6 +35,7 @@ function loadUriqEnv() {
 
 loadUriqEnv();
 
-const nextConfig: NextConfig = {};
+/** @type {import('next').NextConfig} */
+const nextConfig = {};
 
-export default nextConfig;
+module.exports = nextConfig;
