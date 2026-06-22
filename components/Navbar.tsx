@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { LoginDialog } from "@/components/auth/login-dialog";
 import { RegisterDialog } from "@/components/auth/register-dialog";
-import { LanguagePicker } from "@/components/language/language-picker";
+import { GoogleTranslateWidget } from "@/components/language/google-translate";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils/cn";
@@ -53,7 +53,7 @@ export function Navbar({ className }: NavbarProps) {
             <span className="block text-[10px] font-medium text-indigo-600">Your IQ</span>
           </Link>
           <nav className="flex items-center gap-1.5">
-            <LanguagePicker />
+            <GoogleTranslateWidget />
             <Link
               href="/dashboard"
               className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}

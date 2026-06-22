@@ -6,6 +6,15 @@ This file tracks product and engineering progress. Update after each meaningful 
 
 ---
 
+## 2026-06-22 — Free Google Translate widget
+
+### Changed
+- Dropped Google Cloud Translation API (`GOOGLE_TRANSLATE_API_KEY` not required)
+- Added free Google Translate website widget in navbar (same pattern as iiskills.in)
+- Removed `/api/translate` route and custom language picker
+
+---
+
 ## 2026-06-22 — Hostinger Business (Node.js) deployment
 
 ### How ports work on Business hosting
@@ -22,10 +31,11 @@ This file tracks product and engineering progress. Update after each meaningful 
 6. **Node.js version:** 20 or 22
 7. **Environment variables** (hPanel → Node.js app → Environment):
    - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `GOOGLE_TRANSLATE_API_KEY`
-   - `NEXT_PUBLIC_LOGO_URL` (GitHub raw logo URL when ready)
+   - `NEXT_PUBLIC_SUPABASE_KEY` (or `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
+   - `NEXT_PUBLIC_LOGO_URL` (optional — GitHub raw logo URL)
 8. Click **Deploy**
+
+Note: **No** `GOOGLE_TRANSLATE_API_KEY` — translation uses free Google widget. **No** `SUPABASE_SECRET_KEY` unless you add admin server jobs.
 
 ### Do NOT set PORT=3075 on Hostinger
 Let the platform assign the port. Visitors always use `https://uriq.in` (443), never `:3075`.
@@ -66,8 +76,7 @@ Let the platform assign the port. Visitors always use `https://uriq.in` (443), n
 - [x] Landing page with **Your IQ** branding and primary CTA
 - [x] Baseline + category quiz modules (Logic, Patterns, Verbal)
 - [x] Badge system with pass/fail at 50%, badge wall, tier progression
-- [x] Indian language picker (22 scheduled languages + English)
-- [x] Google Cloud Translation API route (placeholder — requires `GOOGLE_TRANSLATE_API_KEY`)
+- [x] Indian language support via free Google Translate widget (22 scheduled languages)
 - [x] Dashboard with blurred partial results + paywall hook
 - [x] Paywall screen: ₹99/year + 18% GST = ₹116.82 (UPI placeholder)
 - [x] Supabase schema migration (users, questions_pool, user_responses, daily_anecdotes, user_badges)
