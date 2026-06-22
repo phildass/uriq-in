@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MobileShell } from "@/components/layout/mobile-shell";
+import MobileShell from "@/components/layout/mobile-shell";
 import { BadgeWall } from "@/components/badges/badge-wall";
 import { Button } from "@/components/ui/button";
 

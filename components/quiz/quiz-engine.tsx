@@ -116,7 +116,7 @@ export function QuizEngine({ testId, testName, questions }: QuizEngineProps) {
             </Button>
           )}
           <Link href="/badges">
-            <Button variant="secondary" className="w-full">
+            <Button variant="outline" className="w-full">
               {t("viewBadges")}
             </Button>
           </Link>

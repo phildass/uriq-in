@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight, Brain, Medal, Timer, Trophy } from "lucide-react";
-import { MobileShell } from "@/components/layout/mobile-shell";
+import MobileShell from "@/components/layout/mobile-shell";
 import { Button } from "@/components/ui/button";
 import { BadgeChip } from "@/components/ui/progress";
 import { useLanguage } from "@/components/providers/language-provider";
@@ -77,12 +77,12 @@ export default function HomePage() {
 
         <div className="flex gap-2">
           <Link href="/badges" className="flex-1">
-            <Button variant="secondary" className="w-full">
+            <Button variant="outline" className="w-full">
               {t("viewBadges")}
             </Button>
           </Link>
           <Link href="/paywall" className="flex-1">
-            <Button variant="secondary" className="w-full">
+            <Button variant="outline" className="w-full">
               {t("premium")}
             </Button>
           </Link>

@@ -1,16 +1,15 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import type { ReactNode } from "react";
+import { AppChrome } from "@/components/layout/app-chrome";
+import { TestSiteMarquee } from "@/components/layout/test-site-marquee";
 import { LanguageProvider } from "@/components/providers/language-provider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -19,15 +18,14 @@ export const metadata: Metadata = {
     "Your IQ. Measured. Mastered. Played. Gamified IQ testing and exam prep for Indian aspirants aged 13–60.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full`}>
-      <body className="min-h-full antialiased">
-        <LanguageProvider>{children}</LanguageProvider>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <body className="font-sans" suppressHydrationWarning>
+        <LanguageProvider>
+          <TestSiteMarquee />
+          <AppChrome>{children}</AppChrome>
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -1,59 +1,90 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { MobileShell } from "@/components/layout/mobile-shell";
+import { GuestScoreBanner } from "@/components/dashboard/guest-score-banner";
+import { ExamAnalytics } from "@/components/dashboard/exam-analytics";
+import { IntelFeed } from "@/components/dashboard/intel-feed";
+import { IqSummary } from "@/components/dashboard/iq-summary";
+import { PremiumCta } from "@/components/dashboard/premium-cta";
+import { FullProfileSection } from "@/components/profile/full-profile-section";
+import MobileShell from "@/components/layout/mobile-shell";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { loadProgress, type UserProgress } from "@/lib/badges";
-import { useLanguage } from "@/components/providers/language-provider";
+import { getDashboardData } from "@/lib/dashboard/get-dashboard";
+import { displayName, fetchProfileByUserId } from "@/lib/supabase/profiles";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-export default function DashboardPage() {
-  const { t } = useLanguage();
-  const [progress, setProgress] = useState<UserProgress | null>(null);
+export default async function DashboardPage() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  useEffect(() => {
-    setProgress(loadProgress());
-  }, []);
-
-  const latest = progress?.testResults.at(-1);
-  const score = latest?.scorePercent ?? 0;
+  const data = await getDashboardData(user?.id ?? null);
+  const profile = user ? await fetchProfileByUserId(user.id, supabase) : null;
+  const name = displayName(profile, user?.email ?? data.user.email);
+  const isPremium = data.user.subscription_status === "premium";
 
   return (
     <MobileShell>
-      <div className="space-y-5">
-        <h1 className="text-xl font-semibold text-slate-900">{t("dashboard")}</h1>
-
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-5">
-          <div className="blur-sm select-none">
-            <p className="text-sm text-slate-500">Baseline IQ Estimate</p>
-            <p className="mt-2 text-4xl font-semibold text-slate-900">{score + 42}</p>
-            <p className="mt-2 text-sm text-slate-600">
-              Spatial Logic: faster than 74% of peers
+      <div className="space-y-4">
+        <header className="space-y-2">
+          <div className="flex items-center justify-between">
+            <p className="text-sm tracking-wide text-base-muted">
+              uriq.in · <span className="text-indigo-600">Your IQ</span>
             </p>
-            <p className="mt-1 text-sm text-slate-600">Verbal: UPSC-ready band</p>
-            <p className="mt-1 text-sm text-slate-600">Logic: Banking aptitude match</p>
+            <Badge variant={isPremium ? "default" : "outline"}>
+              {isPremium ? "Premium" : "Free"}
+            </Badge>
           </div>
-          <div className="absolute inset-0 flex items-center justify-center bg-white/70 p-4 text-center backdrop-blur-[2px]">
-            <div>
-              <p className="text-sm font-medium text-slate-900">
-                Your baseline IQ estimate is ready.
-              </p>
-              <p className="mt-2 text-xs leading-5 text-slate-600">
-                You scored faster than 74% of peers in Spatial Logic. Unlock your full Mensa-level
-                breakdown, exam aptitude mapping, and daily Intel Intel feed.
-              </p>
-              <Link href="/paywall" className="mt-4 inline-block">
-                <Button>{t("unlockPremium")}</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
+          <h1 className="text-2xl font-semibold text-base-text">
+            {user ? `Hi, ${name}` : "Your dashboard"}
+          </h1>
+          <p className="text-sm text-base-muted">
+            {user ?
+              "Performance from your profile and latest sessions."
+            : "Guest preview — register to sync scores to Supabase."}
+          </p>
+          {profile?.last_score_percent != null ?
+            <p className="text-sm font-medium text-base-text">
+              Last score: {profile.last_score_percent}%
+              {profile.baseline_iq_estimate != null ?
+                ` · Baseline IQ est. ${profile.baseline_iq_estimate}`
+              : ""}
+            </p>
+          : null}
+        </header>
+
+        <GuestScoreBanner />
+
+        <IqSummary
+          estimate={data.baselineIqEstimate}
+          peerHighlight={data.peerHighlight}
+          categories={data.categoryBreakdown}
+          locked={!isPremium}
+        />
+
+        <ExamAnalytics metrics={data.examMetrics} locked={!isPremium} />
+
+        {!isPremium ? <PremiumCta benchmarkMessage={data.recentBenchmark} /> : null}
+
+        <FullProfileSection />
+
+        <IntelFeed anecdotes={data.anecdotes} />
 
         <Link href="/badges">
-          <Button variant="secondary" className="w-full">
-            {t("viewBadges")}
+          <Button variant="outline" className="w-full">
+            View Badge Wall
           </Button>
         </Link>
+
+        <div className="flex gap-2 text-center text-xs text-base-muted">
+          <Link href="/quiz/quick" className="underline-offset-2 hover:underline">
+            Quick test
+          </Link>
+          <span aria-hidden>·</span>
+          <Link href="/profile" className="underline-offset-2 hover:underline">
+            Full profile
+          </Link>
+        </div>
       </div>
     </MobileShell>
   );

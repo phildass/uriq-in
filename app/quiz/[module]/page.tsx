@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { MobileShell } from "@/components/layout/mobile-shell";
+import MobileShell from "@/components/layout/mobile-shell";
 import { QuizEngine } from "@/components/quiz/quiz-engine";
 import { getTestModule } from "@/lib/quiz/modules";
 
